@@ -10,6 +10,7 @@ gem 'pg'
 gem 'rack-cors'
 gem 'annotate'
 gem 'devise-jwt', '0.11.0'
+gem 'rspec-snapshot'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
