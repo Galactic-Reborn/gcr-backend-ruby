@@ -4,6 +4,12 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+
+
+    if user.present?
+      can :read, Planet, user_id: user.id
+    end
+
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?

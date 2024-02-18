@@ -4,9 +4,15 @@ module Devise
   module Strategies
     class DeviseNoPass < Authenticatable
       def authenticate!
-        validation = validate_signature(params[:user][:address], params[:user][:token], params[:user][:signature])
-        user = User.find_by_address(params[:user][:address]) if validation
-        user ? success!(user) : raise
+        message = Message.find_by_address(params[:user][:address])
+        return fail! unless message
+        validation = validate_signature(params[:user][:address], message.text, params[:user][:signature])
+        if validation
+          user =  User.find_or_create_by!(address: params[:user][:address])
+        else
+          return fail!
+        end
+        success!(user)
       end
 
       def validate_signature(address, token, signature)

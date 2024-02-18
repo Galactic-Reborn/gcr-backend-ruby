@@ -10,14 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_28_104537) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_18_091655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "buildings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "planet_id", null: false
+    t.integer "titanium_foundry", default: 0
+    t.integer "auronium_synthesizer", default: 0
+    t.integer "hydrogen_extractor", default: 0
+    t.integer "solar_array", default: 0
+    t.integer "fusion_power_plant", default: 0
+    t.integer "lunar_mine", default: 0
+    t.integer "advanced_research_institute", default: 0
+    t.integer "aerospace_yard", default: 0
+    t.integer "geomorphological_reshaper", default: 0
+    t.integer "robotics_workshop", default: 0
+    t.integer "nano_assembly_factory", default: 0
+    t.integer "auronium_repository", default: 0
+    t.integer "hydrogen_tank", default: 0
+    t.integer "titanium_depot", default: 0
+    t.integer "star_ship_hangar", default: 0
+    t.integer "missile_silo", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planet_id"], name: "index_buildings_on_planet_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "text"
+    t.string "address", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "planets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "name", default: ""
-    t.datetime "last_updated"
     t.integer "planet_type"
     t.string "planet_image"
     t.integer "planet_diameter"
@@ -43,6 +72,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_104537) do
     t.boolean "hangar_plus"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "last_updated", default: 0
+    t.json "building_queue", default: {"queue"=>[]}
     t.index ["user_id"], name: "index_planets_on_user_id"
   end
 
@@ -61,8 +92,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_104537) do
     t.integer "tech_end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "jti", null: false
     t.index ["address"], name: "index_users_on_address", unique: true
+    t.index ["jti"], name: "index_users_on_jti", unique: true
   end
 
+  add_foreign_key "buildings", "planets"
   add_foreign_key "planets", "users"
 end

@@ -7,6 +7,7 @@
 #  current_sign_in_at  :datetime
 #  current_sign_in_ip  :string
 #  encrypted_password  :string           default(""), not null
+#  jti                 :string           not null
 #  last_sign_in_at     :datetime
 #  last_sign_in_ip     :string
 #  nonce               :string
@@ -21,8 +22,11 @@
 # Indexes
 #
 #  index_users_on_address  (address) UNIQUE
+#  index_users_on_jti      (jti) UNIQUE
 #
 class User < ApplicationRecord
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :rememberable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self

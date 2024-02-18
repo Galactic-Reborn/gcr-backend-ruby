@@ -7,6 +7,7 @@
 #  current_sign_in_at  :datetime
 #  current_sign_in_ip  :string
 #  encrypted_password  :string           default(""), not null
+#  jti                 :string           not null
 #  last_sign_in_at     :datetime
 #  last_sign_in_ip     :string
 #  nonce               :string
@@ -21,6 +22,7 @@
 # Indexes
 #
 #  index_users_on_address  (address) UNIQUE
+#  index_users_on_jti      (jti) UNIQUE
 #
 require 'rails_helper'
 

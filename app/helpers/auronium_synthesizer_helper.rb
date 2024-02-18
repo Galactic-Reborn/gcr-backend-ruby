@@ -1,12 +1,12 @@
-module CrystalSynthesizerHelper
+module AuroniumSynthesizerHelper
   extend self
   include BuildingsHelper
 
   def get_building_costs(level)
-    base_cost = get_base_building_costs(BuildingConstants::BUILDINGS_ID[:crystalSynthesizer])
+    base_cost = get_base_building_costs(BuildingConstants::BUILDINGS_ID[:auronium_synthesizer])
     {
       titanium: base_cost[:titanium] * base_cost[:factor]**(level - 1),
-      crystal: base_cost[:crystal] * base_cost[:factor]**(level - 1),
+      auronium: base_cost[:auronium] * base_cost[:factor]**(level - 1),
       hydrogen: base_cost[:hydrogen] * base_cost[:factor]**(level - 1),
     }.transform_values(&:floor)
   end

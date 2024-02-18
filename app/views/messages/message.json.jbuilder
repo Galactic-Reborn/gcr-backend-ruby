@@ -1,1 +1,1 @@
-json.nonce @user_nonce
+json.extract! @message, :text

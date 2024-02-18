@@ -8,6 +8,7 @@ require 'rspec/rails'
 require 'seeds/basic_seed'
 require 'test_helper'
 require 'devise/jwt/test_helpers'
+require 'my_custom_serializer'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -33,11 +34,14 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
+  config.include TestHelper
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
 
+  config.snapshot_serializer = MyCustomSerializer
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

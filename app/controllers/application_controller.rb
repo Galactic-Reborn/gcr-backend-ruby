@@ -1,22 +1,62 @@
 class ApplicationController < ActionController::API
   respond_to :json
-
-
-  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
-  rescue_from ::NameError, with: :error_occurred
-  rescue_from ::ActionController::RoutingError, with: :error_occurred
-  rescue_from Exception, with: :error_occurred
-  # Don't resuce from Exception as it will resuce from everything as mentioned here "http://stackoverflow.com/questions/10048173/why-is-it-bad-style-to-rescue-exception-e-in-ruby" Thanks for @Thibaut Barrère for mention that
-  # rescue_from ::Exception, with: :error_occurred
-
-  def record_not_found(exception)
-    render json: { error: exception.message }.to_json, status: 404
-    return
+  before_action :set_default_request_format, :authenticate_user!
+  rescue_from Exception do |exception|
+    if exception.instance_of?(ActiveRecord::RecordNotFound)
+      record_not_found
+    elsif exception.instance_of?(ActionController::BadRequest)
+      bad_request
+    elsif exception.instance_of?(ActiveRecord::RecordInvalid)
+      record_invalid
+    elsif exception.instance_of?(CanCan::AccessDenied)
+      access_denied
+    elsif exception.instance_of?(ActiveRecord::RecordNotUnique)
+      record_not_unique
+    elsif exception.instance_of?(PlanetFieldsFull)
+      planet_fields_full
+    elsif exception.instance_of?(NotEnoughResources)
+      not_enough_resources
+    elsif exception.instance_of?(MaxQueue)
+      max_queue_length_reached
+    else
+      internal_server_error
+    end
   end
 
-  def error_occurred(exception)
-    render json: { error: exception.message }.to_json, status: 500
-    return
+  def record_not_found
+    render json: { error: 'not found' }, status: :not_found
+  end
+
+  def access_denied
+    render json: { error: 'access denied' }, status: :unauthorized
+  end
+
+  def record_invalid
+    render json: { error: 'record invalid' }, status: :unprocessable_entity
+  end
+
+  def record_not_unique
+    render json: { error: 'record not unique' }, status: :conflict
+  end
+
+  def bad_request
+    render json: { error: 'bad request' }, status: :bad_request
+  end
+
+  def planet_fields_full
+    render json: { error: 'planet fields full' }, status: :bad_request
+  end
+
+  def not_enough_resources
+    render json: { error: 'not enough resources' }, status: :bad_request
+  end
+
+  def max_queue_length_reached
+    render json: { error: 'max queue length reached' }, status: :bad_request
+  end
+
+  def internal_server_error
+    render json: { error: 'internal server error' }, status: :internal_server_error
   end
 
   def set_default_request_format
