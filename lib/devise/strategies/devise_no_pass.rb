@@ -22,7 +22,11 @@ module Devise
         message = token
         signature = signature
         # recover the public key from the signature
-        recovered_public_key = Eth::Signature.personal_recover message, signature
+        begin
+          recovered_public_key = Eth::Signature.personal_recover message, signature
+        rescue
+          return false
+        end
         # recover the address from the public key
         recovered_address = Eth::Util.public_key_to_address recovered_public_key
         signer_address.eql?(recovered_address.checksummed)

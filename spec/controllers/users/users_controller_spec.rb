@@ -42,7 +42,7 @@ RSpec.describe 'UsersController', type: :request do
         message = response_body['text']
         signed_message = @eth_account.personal_sign(message)
 
-        post '/api/users/sign_in', params: { user: { address: @eth_address + '1', signature: signed_message } }
+        post '/api/users/sign_in', params: { user: { address: @eth_address.to_s + '1', signature: signed_message } }
         expect(response).to have_http_status(:unauthorized)
         expect(response.headers['Authorization']).to be_blank
       end
