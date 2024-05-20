@@ -1,0 +1,35 @@
+{
+  "id": "ANY",
+  "auronium": 1022,
+  "auronium_mine_percentage": 100,
+  "building_demolition": false,
+  "building_end_time": "ANY",
+  "building_queue": {
+    "queue": [
+
+    ]
+  },
+  "building_id": 0,
+  "energy": 37,
+  "energy_max": 81,
+  "energy_used": 44,
+  "fields_current": 8,
+  "fields_max": 100,
+  "hangar_plus": false,
+  "hangar_queue": [
+
+  ],
+  "hangar_start_time": null,
+  "hydrogen": 999,
+  "hydrogen_mine_percentage": 100,
+  "last_updated": "ANY",
+  "name": "Milosz Planet",
+  "planet_diameter": 100,
+  "planet_image": "milosz_planet.jpg",
+  "planet_type": 1,
+  "stardust": 100,
+  "temp_max": 100,
+  "temp_min": 100,
+  "titanium": 1033,
+  "titanium_mine_percentage": 100
+}

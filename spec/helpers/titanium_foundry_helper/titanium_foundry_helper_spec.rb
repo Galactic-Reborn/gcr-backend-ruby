@@ -6,8 +6,9 @@ RSpec.describe 'TitaniumFoundryHelper' do
 
   context 'get building costs' do
     it 'should get correct building costs' do
-      expect(TitaniumFoundryHelper.get_building_costs(1)).to eq({:titanium=>60, :crystal=>15, :hydrogen=>0})
-      expect(TitaniumFoundryHelper.get_building_costs(2)).to eq({:titanium=>90, :crystal=>22, :hydrogen=>0})
+      expect(TitaniumFoundryHelper.get_building_costs(1)).to eq({:titanium=>60, :auronium=>15, :hydrogen=>0})
+      expect(TitaniumFoundryHelper.get_building_costs(2)).to eq({:titanium=>90, :auronium=>22, :hydrogen=>0})
+      expect(TitaniumFoundryHelper.get_building_costs(3)).to eq({:titanium=>135, :auronium=>33, :hydrogen=>0})
     end
   end
 

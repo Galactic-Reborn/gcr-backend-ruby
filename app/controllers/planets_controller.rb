@@ -1,14 +1,21 @@
-# frozen_string_literal: true
-
 class PlanetsController < ApplicationController
-
+  load_and_authorize_resource :planet
+  # before_action :update_resources_planet, only: [:show]
+  # before_action :update_resources_planets, only: [:index]
 
   def index
-    planet = Planet.find_by(user_id: current_user.id)
-    planet.building.build(100)
   end
 
   def show
+  end
 
+  private
+
+  def update_resources_planet
+    @planet.update_resources
+  end
+
+  def update_resources_planets
+    @planets.each(&:update_resources)
   end
 end

@@ -41,6 +41,23 @@ class BuildingQueue
     @queue.find { |queue_item| queue_item['unit_id'] == unit_id }
   end
 
+  def get_queue_item_by_position(position)
+    @queue[position]
+  end
+
+  def remove_queue_item_by_position(position)
+    @queue.delete_at(position)
+  end
+
+  def get_last_queue_item_by_unit_id(unit_id)
+    @queue.reverse_each do |queue_item|
+      if queue_item['unit_id'] == unit_id
+        return queue_item
+      end
+    end
+    return nil
+  end
+
   def remove_queue_item_by_unit_id(unit_id)
     @queue.reverse_each do |queue_item|
       if queue_item['unit_id'] == unit_id

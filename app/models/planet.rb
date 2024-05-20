@@ -43,14 +43,16 @@
 #
 class Planet < ApplicationRecord
   belongs_to :user
-  has_one :building
+  has_one :building, dependent: :destroy
+
+  after_find :update_resources
 
   def avg_temp
     (temp_max + temp_min) / 2
   end
 
   def update_resources
-    production_rates = building.resources_production_rate
+    production_rates = building.resources_production_rate(avg_temp)
     energy_production_solar = building.energy_production_solar
     energy_production_fusion = building.energy_production_fusion
     energy_consumption = building.energy_consumption
@@ -71,7 +73,7 @@ class Planet < ApplicationRecord
     energy_produced = energy_production_solar + energy_production_fusion
 
     if energy_produced < energy_consumption
-      mines_efficiency =  energy_produced.fdiv(energy_consumption)
+      mines_efficiency = energy_produced.fdiv(energy_consumption)
       titanium_produced = (titanium_produced * mines_efficiency).floor
       crystal_produced = (crystal_produced * mines_efficiency).floor
       hydrogen_produced = (hydrogen_produced * mines_efficiency).floor
@@ -83,6 +85,8 @@ class Planet < ApplicationRecord
 
     self.energy_max = energy_produced
     self.energy_used = energy_consumption > energy_produced ? energy_produced : energy_consumption
+    self.energy = energy_max - energy_used
+    self.fields_current = update_planet_fields
 
     self.last_updated = Time.now.to_i
 
@@ -99,5 +103,9 @@ class Planet < ApplicationRecord
 
   def check_planet_fields
     raise PlanetFieldsFull if fields_current + 1 >= fields_max
+  end
+
+  def update_planet_fields
+    building.attributes.except('id', 'created_at', 'updated_at', 'planet_id').values.compact.sum
   end
 end

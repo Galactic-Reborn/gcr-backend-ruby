@@ -1,0 +1,20 @@
+{
+  "id": "ANY",
+  "planet_id": "ANY",
+  "titanium_foundry": 2,
+  "titanium_depot": 1,
+  "auronium_synthesizer": 1,
+  "hydrogen_extractor": 1,
+  "auronium_repository": 1,
+  "solar_array": 2,
+  "fusion_power_plant": 1,
+  "advanced_research_institute": 0,
+  "geomorphological_reshaper": 0,
+  "hydrogen_tank": 0,
+  "star_ship_hangar": 0,
+  "missile_silo": 0,
+  "aerospace_yard": 0,
+  "lunar_mine": 0,
+  "robotics_workshop": 0,
+  "nano_assembly_factory": 0
+}

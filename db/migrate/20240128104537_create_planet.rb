@@ -1,4 +1,4 @@
-class CreatePlanet < ActiveRecord::Migration[7.1]
+  class CreatePlanet < ActiveRecord::Migration[7.1]
   def change
     create_table :planets, id: :uuid do |t|
       t.references :user,  foreign_key: true, type: :uuid

@@ -18,6 +18,12 @@ class ApplicationController < ActionController::API
       not_enough_resources
     elsif exception.instance_of?(MaxQueue)
       max_queue_length_reached
+    elsif exception.instance_of?(NoBuildingInQueue)
+      no_building_in_queue
+    elsif exception.instance_of?(NoBuildingToDemolish)
+      no_building_to_demolish
+    elsif exception.instance_of?(CantDemolishBuildingInQueue)
+      cant_demolish_building_in_queue
     else
       internal_server_error
     end
@@ -53,6 +59,18 @@ class ApplicationController < ActionController::API
 
   def max_queue_length_reached
     render json: { error: 'max queue length reached' }, status: :bad_request
+  end
+
+  def no_building_in_queue
+    render json: { error: 'no building in queue' }, status: :bad_request
+  end
+
+  def no_building_to_demolish
+    render json: { error: 'no building to demolish' }, status: :bad_request
+  end
+
+  def cant_demolish_building_in_queue
+    render json: { error: 'You can not demolish building in queue' }, status: :bad_request
   end
 
   def internal_server_error

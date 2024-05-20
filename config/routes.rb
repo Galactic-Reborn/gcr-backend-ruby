@@ -5,6 +5,14 @@ Rails.application.routes.draw do
     get 'profile', to: 'profile#show'
     put 'profile', to: 'profile#update'
 
-    resources :planets, only: [:index, :show]
+    resources :planets, only: [:index, :show] do
+      resources :buildings, only: [:index] do
+        collection do
+          post  :build
+          post  :cancel
+          post  :demolish
+        end
+      end
+    end
   end
 end
