@@ -3,7 +3,6 @@
 class BuildingsController < ApplicationController
   load_and_authorize_resource :planet
   load_and_authorize_resource :building, through: :planet, singleton: true
-  before_action :check_build_end
 
   def index
   end

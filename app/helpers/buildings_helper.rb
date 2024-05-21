@@ -12,9 +12,9 @@ module BuildingsHelper
 
   def calculate_building_costs(level, building_id)
     case building_id
-    when BUILDINGS_ID[:auroniumRepository]
+    when BUILDINGS_ID[:auronium_repository]
       AuroniumRepositoryHelper.get_building_costs(level)
-    when BUILDINGS_ID[:auroniumSynthesizer]
+    when BUILDINGS_ID[:auronium_synthesizer]
       AuroniumSynthesizerHelper.get_building_costs(level)
     when BUILDINGS_ID[:titanium_depot]
       TitaniumDepotHelper.get_building_costs(level)

@@ -8,5 +8,5 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-
+UniverseField.create_universe
 User.create!(username: 'admin', address: "0x28a95Aa43700dAc5807311ce3680e30068FC6c6d")

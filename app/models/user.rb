@@ -30,6 +30,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :rememberable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
+  after_create :assign_planet
 
   def email_required?
     false
@@ -41,5 +42,10 @@ class User < ApplicationRecord
 
   def password_required?
     false
+  end
+
+  def assign_planet
+    planet = Planet.get_first_free_planet
+    planet.update(user_id: id) if planet
   end
 end

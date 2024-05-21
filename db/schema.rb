@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_18_091655) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_20_164440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,7 +74,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_18_091655) do
     t.datetime "updated_at", null: false
     t.integer "last_updated", default: 0
     t.json "building_queue", default: {"queue"=>[]}
+    t.uuid "universe_field_id"
+    t.index ["universe_field_id"], name: "index_planets_on_universe_field_id"
     t.index ["user_id"], name: "index_planets_on_user_id"
+  end
+
+  create_table "universe_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "pos_galaxy"
+    t.integer "pos_system"
+    t.integer "pos_planet"
+    t.uuid "planet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planet_id"], name: "index_universe_fields_on_planet_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -98,5 +110,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_18_091655) do
   end
 
   add_foreign_key "buildings", "planets"
+  add_foreign_key "planets", "universe_fields"
   add_foreign_key "planets", "users"
+  add_foreign_key "universe_fields", "planets"
 end

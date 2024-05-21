@@ -115,7 +115,7 @@ class Building < ApplicationRecord
 
     # Dodawanie do kolejki lub rozpoczęcie budowy
     if planet.building_end_time > 0
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level})
+      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: planet.building_end_time + building_time})
     else
       planet.building_end_time = Time.now.to_i + building_time
       planet.building_demolition = false
@@ -181,7 +181,7 @@ class Building < ApplicationRecord
     building_time = CalculationsHelper.calculate_build_time_in_seconds(building_costs[:titanium], building_costs[:auronium], robotics_workshop, nano_assembly_factory)
 
     if planet.building_end_time > 0
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: true, level: actual_building_level})
+      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: true, level: actual_building_level, building_end_time: planet.building_end_time + building_time / 2})
     else
       planet.building_end_time = Time.now.to_i + building_time / 2
       planet.building_demolition = true
@@ -195,6 +195,7 @@ class Building < ApplicationRecord
   def check_build_end
     if planet.building_end_time > 0 && planet.building_end_time <= Time.now.to_i
       planet_queue = BuildingQueue.new(planet.building_queue)
+      planet_queue_length = planet_queue.get_length
       building_id = planet.building_id
       if planet.building_demolition
         building_costs = BuildingsHelper.calculate_building_costs(self[BuildingConstants::BUILDINGS_NAME[building_id]], building_id)
@@ -207,17 +208,15 @@ class Building < ApplicationRecord
         self[BuildingConstants::BUILDINGS_NAME[building_id]] += 1
       end
 
-      if planet_queue.get_length > 0
+      if planet_queue_length > 0
         queue_item = planet_queue.get_first_queue_item
-        building_costs = BuildingsHelper.calculate_building_costs(queue_item['level'], queue_item['unit_id'])
-        building_time = CalculationsHelper.calculate_build_time_in_seconds(building_costs[:titanium], building_costs[:auronium], robotics_workshop, nano_assembly_factory)
         if queue_item['is_demolition']
-          planet.building_end_time = Time.now.to_i + building_time / 2
+          planet.building_end_time = queue_item['building_end_time']
           planet.building_demolition = true
           planet.building_id = queue_item['unit_id']
           planet_queue.remove_queue_item
         else
-          planet.building_end_time = Time.now.to_i + building_time
+          planet.building_end_time = queue_item['building_end_time']
           planet.building_demolition = false
           planet.building_id = queue_item['unit_id']
           planet_queue.remove_queue_item
@@ -230,6 +229,9 @@ class Building < ApplicationRecord
       planet.building_queue = planet_queue
       planet.save
       self.save
+      if planet_queue_length > 0
+        check_build_end
+      end
     end
   end
 

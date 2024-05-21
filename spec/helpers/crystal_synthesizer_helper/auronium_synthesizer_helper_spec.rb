@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe 'CrystalSynthesizerHelper' do
+RSpec.describe 'AuroniumSynthesizerHelper' do
 
 
   context 'get building costs' do
     it 'should get correct building costs' do
-      expect(AuroniumSynthesizerHelper.get_building_costs(1)).to eq({ :titanium=>48, :crystal=>24, :hydrogen=>0})
-      expect(AuroniumSynthesizerHelper.get_building_costs(2)).to eq({ :titanium=>76, :crystal=>38, :hydrogen=>0})
+      expect(AuroniumSynthesizerHelper.get_building_costs(1)).to eq({ :titanium=>48, :auronium=>24, :hydrogen=>0})
+      expect(AuroniumSynthesizerHelper.get_building_costs(2)).to eq({ :titanium=>76, :auronium=>38, :hydrogen=>0})
     end
   end
 

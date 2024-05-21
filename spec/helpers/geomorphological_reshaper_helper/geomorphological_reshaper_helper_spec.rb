@@ -7,8 +7,8 @@ RSpec.describe 'GeomorphologicalReshaperHelper' do
 
   context 'get building costs' do
     it  'should return correct building costs' do
-      expect(GeomorphologicalReshaperHelper.get_building_costs(1)).to eq({:titanium=>0, :crystal=>50000, :hydrogen=>100000})
-      expect(GeomorphologicalReshaperHelper.get_building_costs(2)).to eq({:titanium=>0, :crystal=>100000, :hydrogen=>200000})
+      expect(GeomorphologicalReshaperHelper.get_building_costs(1)).to eq({:titanium=>0, :auronium=>50000, :hydrogen=>100000})
+      expect(GeomorphologicalReshaperHelper.get_building_costs(2)).to eq({:titanium=>0, :auronium=>100000, :hydrogen=>200000})
     end
   end
 

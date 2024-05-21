@@ -6,8 +6,8 @@ RSpec.describe 'HydrogenExtractorHelper' do
 
   context 'get building costs' do
     it 'should get correct building costs' do
-      expect(HydrogenExtractorHelper.get_building_costs(1)).to eq({:titanium=>225, :crystal=>75, :hydrogen=>0})
-      expect(HydrogenExtractorHelper.get_building_costs(2)).to eq({:titanium=>337, :crystal=>112, :hydrogen=>0})
+      expect(HydrogenExtractorHelper.get_building_costs(1)).to eq({:titanium=>225, :auronium=>75, :hydrogen=>0})
+      expect(HydrogenExtractorHelper.get_building_costs(2)).to eq({:titanium=>337, :auronium=>112, :hydrogen=>0})
     end
   end
 

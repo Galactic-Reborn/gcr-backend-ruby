@@ -17,7 +17,7 @@ class CreateBuildings < ActiveRecord::Migration[7.1]
       t.integer :hydrogen_tank, default: 0
       t.integer :titanium_depot, default: 0
       t.integer :star_ship_hangar, default: 0
-      t.integer :missileSilo, default: 0
+      t.integer :missile_silo, default: 0
 
 
       t.timestamps

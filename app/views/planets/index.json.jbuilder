@@ -1,3 +1,3 @@
 json.array! @planets do |planet|
-  json.extract! planet, :name
+  json.extract! planet, :id, :name
 end

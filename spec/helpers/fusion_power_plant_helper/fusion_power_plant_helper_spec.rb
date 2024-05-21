@@ -7,8 +7,8 @@ RSpec.describe 'FusionPowerPlantHelper' do
 
   context 'get building costs' do
     it 'should get correct building costs' do
-      expect(FusionPowerPlantHelper.get_building_costs(1)).to eq({:titanium=>900, :crystal=>360, :hydrogen=>180})
-      expect(FusionPowerPlantHelper.get_building_costs(2)).to eq({:titanium=>1620, :crystal=>648, :hydrogen=>324})
+      expect(FusionPowerPlantHelper.get_building_costs(1)).to eq({:titanium=>900, :auronium=>360, :hydrogen=>180})
+      expect(FusionPowerPlantHelper.get_building_costs(2)).to eq({:titanium=>1620, :auronium=>648, :hydrogen=>324})
     end
   end
 

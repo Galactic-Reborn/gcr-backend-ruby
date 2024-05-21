@@ -31,19 +31,24 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  building_id              :integer
+#  universe_field_id        :uuid
 #  user_id                  :uuid
 #
 # Indexes
 #
-#  index_planets_on_user_id  (user_id)
+#  index_planets_on_universe_field_id  (universe_field_id)
+#  index_planets_on_user_id            (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (universe_field_id => universe_fields.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class Planet < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
+  belongs_to :universe_field, optional: true
   has_one :building, dependent: :destroy
+  before_validation :defaults
 
   after_find :update_resources
 
@@ -52,6 +57,7 @@ class Planet < ApplicationRecord
   end
 
   def update_resources
+    building.check_build_end
     production_rates = building.resources_production_rate(avg_temp)
     energy_production_solar = building.energy_production_solar
     energy_production_fusion = building.energy_production_fusion
@@ -86,7 +92,7 @@ class Planet < ApplicationRecord
     self.energy_max = energy_produced
     self.energy_used = energy_consumption > energy_produced ? energy_produced : energy_consumption
     self.energy = energy_max - energy_used
-    self.fields_current = update_planet_fields
+    self.fields_current = sum_of_buildings_levels
 
     self.last_updated = Time.now.to_i
 
@@ -105,7 +111,21 @@ class Planet < ApplicationRecord
     raise PlanetFieldsFull if fields_current + 1 >= fields_max
   end
 
-  def update_planet_fields
+  def sum_of_buildings_levels
     building.attributes.except('id', 'created_at', 'updated_at', 'planet_id').values.compact.sum
   end
+
+  def self.get_first_free_planet
+    Planet.where(user_id: nil).joins(:universe_field)
+          .where(universe_fields: { pos_planet: GameConfig::MIN_POSITION_USER_START_PLANET..GameConfig::MAX_POSITION_USER_START_PLANET })
+          .order(:created_at)
+          .first
+  end
+
+  private
+
+  def defaults
+    self.building_end_time ||= 0
+  end
+
 end

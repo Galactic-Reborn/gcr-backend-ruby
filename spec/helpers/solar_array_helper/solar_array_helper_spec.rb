@@ -6,8 +6,8 @@ RSpec.describe 'SolarArrayHelper' do
 
   context 'get building costs' do
     it 'should get correct building costs' do
-      expect(SolarArrayHelper.get_building_costs(1)).to eq({:titanium=>75, :crystal=>30, :hydrogen=>0})
-      expect(SolarArrayHelper.get_building_costs(2)).to eq({:titanium=>112, :crystal=>45, :hydrogen=>0})
+      expect(SolarArrayHelper.get_building_costs(1)).to eq({:titanium=>75, :auronium=>30, :hydrogen=>0})
+      expect(SolarArrayHelper.get_building_costs(2)).to eq({:titanium=>112, :auronium=>45, :hydrogen=>0})
     end
   end
 

@@ -14,18 +14,19 @@ RSpec.shared_examples "basic_seed" do
   end
 
   def load_test_data
-    User.create!(
-      username: 'Adrian',
-      address: Eth::Key.new.address,
-    )
+    field_adrian = UniverseField.create!(
+      pos_planet: 6,
+      pos_system: 1,
+      pos_galaxy: 1,
+      )
 
-    User.create!(
-      username: 'Milosz',
-      address: Eth::Key.new.address,
-    )
+    field_milosz = UniverseField.create!(
+      pos_planet: 7,
+      pos_system: 1,
+      pos_galaxy: 1,
+      )
 
     planet = Planet.create!(
-      user_id: milosz.id,
       name: 'Milosz Planet',
       last_updated: Time.now-1.hour,
       planet_type: 1,
@@ -51,6 +52,8 @@ RSpec.shared_examples "basic_seed" do
       hangar_queue: [],
       hangar_start_time: 0,
       hangar_plus: false,
+      user_id: nil,
+      universe_field_id: field_milosz.id
     )
 
     Building.create!(
@@ -64,9 +67,11 @@ RSpec.shared_examples "basic_seed" do
       fusion_power_plant: 1,
     )
 
+    field_milosz.planet_id = planet.id
+    field_milosz.save
+
 
     planet = Planet.create!(
-      user_id: adrian.id,
       name: 'Adrian Planet',
       last_updated: Time.now-1.hour,
       planet_type: 1,
@@ -92,6 +97,8 @@ RSpec.shared_examples "basic_seed" do
       hangar_queue: [],
       hangar_start_time: 0,
       hangar_plus: false,
+      user_id: nil,
+      universe_field_id: field_adrian.id
     )
 
     Building.create!(
@@ -104,6 +111,21 @@ RSpec.shared_examples "basic_seed" do
       solar_array: 2,
       fusion_power_plant: 1,
     )
+
+    field_adrian.planet_id = planet.id
+    field_adrian.save
+
+    User.create!(
+      username: 'Milosz',
+      address: Eth::Key.new.address,
+      )
+
+    User.create!(
+      username: 'Adrian',
+      address: Eth::Key.new.address,
+      )
+
+
 
   end
 
