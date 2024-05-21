@@ -35,7 +35,7 @@
 #
 class Building < ApplicationRecord
   belongs_to :planet
-
+  after_find :check_build_end
 
 
   def self.building_cost(building_id)
@@ -115,7 +115,13 @@ class Building < ApplicationRecord
 
     # Dodawanie do kolejki lub rozpoczęcie budowy
     if planet.building_end_time > 0
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: planet.building_end_time + building_time})
+      last_queue_item = planet_queue.get_last_queue_item
+      if last_queue_item.present?
+        building_end_time = last_queue_item['building_end_time']
+      else
+        building_end_time = planet.building_end_time
+      end
+      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: building_end_time + building_time})
     else
       planet.building_end_time = Time.now.to_i + building_time
       planet.building_demolition = false
@@ -159,6 +165,20 @@ class Building < ApplicationRecord
           planet.hydrogen += building_costs[:hydrogen]
         end
         planet_queue.remove_queue_item_by_position(position)
+      end
+    end
+    if planet_queue.get_length > 0
+      queue_item = planet_queue.get_first_queue_item
+      if queue_item['is_demolition']
+        planet.building_end_time = queue_item['building_end_time']
+        planet.building_demolition = true
+        planet.building_id = queue_item['unit_id']
+        planet_queue.remove_queue_item
+      else
+        planet.building_end_time = queue_item['building_end_time']
+        planet.building_demolition = false
+        planet.building_id = queue_item['unit_id']
+        planet_queue.remove_queue_item
       end
     end
     planet.save
@@ -229,7 +249,7 @@ class Building < ApplicationRecord
       planet.building_queue = planet_queue
       planet.save
       self.save
-      if planet_queue_length > 0
+      if planet_queue_length > 0  && planet.building_end_time <= Time.now.to_i
         check_build_end
       end
     end

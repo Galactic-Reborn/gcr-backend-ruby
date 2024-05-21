@@ -57,7 +57,6 @@ class Planet < ApplicationRecord
   end
 
   def update_resources
-    building.check_build_end
     production_rates = building.resources_production_rate(avg_temp)
     energy_production_solar = building.energy_production_solar
     energy_production_fusion = building.energy_production_fusion
