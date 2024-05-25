@@ -7,6 +7,7 @@ class PlanetsController < ApplicationController
   end
 
   def show
+    @storages_capacity = @planet.building.storages_capacity
   end
 
   private

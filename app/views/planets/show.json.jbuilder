@@ -1,7 +1,6 @@
 json.extract! @planet,
               :id,
               :auronium,
-              :auronium_mine_percentage,
               :building_demolition,
               :building_end_time,
               :building_queue,
@@ -15,7 +14,6 @@ json.extract! @planet,
               :hangar_queue,
               :hangar_start_time,
               :hydrogen,
-              :hydrogen_mine_percentage,
               :last_updated,
               :name,
               :planet_diameter,
@@ -24,5 +22,8 @@ json.extract! @planet,
               :stardust,
               :temp_max,
               :temp_min,
-              :titanium,
-              :titanium_mine_percentage
+              :titanium
+
+json.titanium_storage @storages_capacity[:titanium]
+json.auronium_storage @storages_capacity[:auronium]
+json.hydrogen_storage @storages_capacity[:hydrogen]

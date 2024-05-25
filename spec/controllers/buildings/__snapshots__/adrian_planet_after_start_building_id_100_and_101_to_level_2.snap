@@ -1,7 +1,6 @@
 {
   "id": "ANY",
   "auronium": 962,
-  "auronium_mine_percentage": 100,
   "building_demolition": false,
   "building_end_time": "ANY",
   "building_queue": {
@@ -10,7 +9,8 @@
         "amount": 1,
         "unit_id": 101,
         "is_demolition": false,
-        "level": 2
+        "level": 2,
+        "building_end_time": "ANY"
       }
     ]
   },
@@ -26,7 +26,6 @@
   ],
   "hangar_start_time": null,
   "hydrogen": 999,
-  "hydrogen_mine_percentage": 100,
   "last_updated": "ANY",
   "name": "Adrian Planet",
   "planet_diameter": 100,
@@ -36,5 +35,7 @@
   "temp_max": 100,
   "temp_min": 100,
   "titanium": 867,
-  "titanium_mine_percentage": 100
+  "titanium_storage": 20000,
+  "auronium_storage": 20000,
+  "hydrogen_storage": 10000
 }

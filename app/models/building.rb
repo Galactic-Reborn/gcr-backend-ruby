@@ -37,7 +37,6 @@ class Building < ApplicationRecord
   belongs_to :planet
   after_find :check_build_end
 
-
   def self.building_cost(building_id)
     BuildingConstants::BUILDINGS_COSTS[building_id]
   end
@@ -62,7 +61,7 @@ class Building < ApplicationRecord
     {
       titanium: TitaniumFoundryHelper.get_production_rate(titanium_foundry),
       auronium: AuroniumSynthesizerHelper.get_production_rate(auronium_synthesizer),
-      hydrogen: HydrogenExtractorHelper.get_production_rate(hydrogen_extractor,planet_avg_temp),
+      hydrogen: HydrogenExtractorHelper.get_production_rate(hydrogen_extractor, planet_avg_temp),
     }.freeze
   end
 
@@ -121,7 +120,7 @@ class Building < ApplicationRecord
       else
         building_end_time = planet.building_end_time
       end
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: building_end_time + building_time})
+      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: building_end_time + building_time })
     else
       planet.building_end_time = Time.now.to_i + building_time
       planet.building_demolition = false
@@ -145,7 +144,7 @@ class Building < ApplicationRecord
 
     if position == 0 && planet.building_end_time > 0
       unless planet.building_demolition
-        building_costs = BuildingsHelper.calculate_building_costs(self[BuildingConstants::BUILDINGS_NAME[planet.building_id]]+1, planet.building_id)
+        building_costs = BuildingsHelper.calculate_building_costs(self[BuildingConstants::BUILDINGS_NAME[planet.building_id]] + 1, planet.building_id)
         planet.titanium += building_costs[:titanium]
         planet.auronium += building_costs[:auronium]
         planet.hydrogen += building_costs[:hydrogen]
@@ -167,19 +166,8 @@ class Building < ApplicationRecord
         planet_queue.remove_queue_item_by_position(position)
       end
     end
-    if planet_queue.get_length > 0
-      queue_item = planet_queue.get_first_queue_item
-      if queue_item['is_demolition']
-        planet.building_end_time = queue_item['building_end_time']
-        planet.building_demolition = true
-        planet.building_id = queue_item['unit_id']
-        planet_queue.remove_queue_item
-      else
-        planet.building_end_time = queue_item['building_end_time']
-        planet.building_demolition = false
-        planet.building_id = queue_item['unit_id']
-        planet_queue.remove_queue_item
-      end
+    if planet_queue.get_length > 0 && planet.building_end_time == 0 && planet.building_id == 0
+      process_first_queue_item(planet_queue)
     end
     planet.save
   end
@@ -201,7 +189,7 @@ class Building < ApplicationRecord
     building_time = CalculationsHelper.calculate_build_time_in_seconds(building_costs[:titanium], building_costs[:auronium], robotics_workshop, nano_assembly_factory)
 
     if planet.building_end_time > 0
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: true, level: actual_building_level, building_end_time: planet.building_end_time + building_time / 2})
+      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: true, level: actual_building_level, building_end_time: planet.building_end_time + building_time / 2 })
     else
       planet.building_end_time = Time.now.to_i + building_time / 2
       planet.building_demolition = true
@@ -229,18 +217,7 @@ class Building < ApplicationRecord
       end
 
       if planet_queue_length > 0
-        queue_item = planet_queue.get_first_queue_item
-        if queue_item['is_demolition']
-          planet.building_end_time = queue_item['building_end_time']
-          planet.building_demolition = true
-          planet.building_id = queue_item['unit_id']
-          planet_queue.remove_queue_item
-        else
-          planet.building_end_time = queue_item['building_end_time']
-          planet.building_demolition = false
-          planet.building_id = queue_item['unit_id']
-          planet_queue.remove_queue_item
-        end
+        process_first_queue_item(planet_queue)
       else
         planet.building_end_time = 0
         planet.building_demolition = false
@@ -249,10 +226,27 @@ class Building < ApplicationRecord
       planet.building_queue = planet_queue
       planet.save
       self.save
-      if planet_queue_length > 0  && planet.building_end_time <= Time.now.to_i
+      if planet_queue_length > 0 && planet.building_end_time <= Time.now.to_i
         check_build_end
       end
     end
   end
 
+  private
+
+  def process_first_queue_item(planet_queue)
+    queue_item = planet_queue.get_first_queue_item
+    if queue_item['is_demolition']
+      planet.building_end_time = queue_item['building_end_time']
+      planet.building_demolition = True
+      planet.building_id = queue_item['unit_id']
+    else
+      planet.building_end_time = queue_item['building_end_time']
+      planet.building_demolition = False
+      planet.building_id = queue_item['unit_id']
+    end
+    planet_queue.remove_queue_item
+  end
 end
+
+
