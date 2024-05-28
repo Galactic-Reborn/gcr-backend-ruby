@@ -17,12 +17,18 @@
 #  username            :string           default(""), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  main_planet_id      :uuid
 #  tech_id             :integer
 #
 # Indexes
 #
-#  index_users_on_address  (address) UNIQUE
-#  index_users_on_jti      (jti) UNIQUE
+#  index_users_on_address         (address) UNIQUE
+#  index_users_on_jti             (jti) UNIQUE
+#  index_users_on_main_planet_id  (main_planet_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (main_planet_id => planets.id)
 #
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
@@ -46,6 +52,12 @@ class User < ApplicationRecord
 
   def assign_planet
     planet = Planet.get_first_free_planet
-    planet.update(user_id: id) if planet
+    if planet
+      self.main_planet_id = planet.id
+      self.save
+      planet.update(user_id: self.id)
+    else
+      raise NoFreePlanets
+    end
   end
 end

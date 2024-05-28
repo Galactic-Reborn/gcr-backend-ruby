@@ -65,5 +65,9 @@ class UniverseField < ApplicationRecord
     true
   end
 
+  def find_planet_position(planet_id)
+    UniverseField.find_by(planet_id: planet_id)
+  end
+
 
 end

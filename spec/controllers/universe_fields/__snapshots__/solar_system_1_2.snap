@@ -1,0 +1,15 @@
+[
+  {
+    "pos_galaxy": 1,
+    "pos_system": 2,
+    "pos_planet": 6,
+    "planet": {
+      "name": "Terra 1",
+      "planet_type": 1,
+      "planet_image": "terra_1.jpg",
+      "planet_diameter": 100,
+      "temp_max": 100,
+      "temp_min": 100
+    }
+  }
+]

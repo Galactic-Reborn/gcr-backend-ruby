@@ -1,0 +1,34 @@
+[
+  {
+    "pos_galaxy": 1,
+    "pos_system": 1,
+    "pos_planet": 7,
+    "planet": {
+      "name": "Milosz Planet",
+      "planet_type": 1,
+      "planet_image": "milosz_planet.jpg",
+      "planet_diameter": 100,
+      "temp_max": 100,
+      "temp_min": 100,
+      "user": {
+        "username": "Milosz"
+      }
+    }
+  },
+  {
+    "pos_galaxy": 1,
+    "pos_system": 1,
+    "pos_planet": 6,
+    "planet": {
+      "name": "Adrian Planet",
+      "planet_type": 1,
+      "planet_image": "adrian_planet.jpg",
+      "planet_diameter": 100,
+      "temp_max": 100,
+      "temp_min": 100,
+      "user": {
+        "username": "Adrian"
+      }
+    }
+  }
+]

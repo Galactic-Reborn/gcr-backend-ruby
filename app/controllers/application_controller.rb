@@ -24,6 +24,8 @@ class ApplicationController < ActionController::API
       no_building_to_demolish
     elsif exception.instance_of?(CantDemolishBuildingInQueue)
       cant_demolish_building_in_queue
+    elsif exception.instance_of?(NoFreePlanets)
+      no_free_planets
     else
       internal_server_error
     end
@@ -59,6 +61,10 @@ class ApplicationController < ActionController::API
 
   def max_queue_length_reached
     render json: { error: 'max queue length reached' }, status: :bad_request
+  end
+
+  def no_free_planets
+    render json: { error: 'no free planets' }, status: :bad_request
   end
 
   def no_building_in_queue
