@@ -153,4 +153,10 @@ module BuildingConstants
       factor: 2,
     },
   }.freeze
+
+  # TODO - Add buildings requirements
+
+  BUILDINGS_REQUIREMENTS = {
+
+  }.freeze
 end
