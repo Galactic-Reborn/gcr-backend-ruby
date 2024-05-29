@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_27_165217) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_29_074203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,17 +61,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_27_165217) do
     t.integer "energy_used"
     t.integer "energy_max"
     t.integer "stardust"
-    t.integer "building_id"
-    t.integer "building_end_time"
-    t.boolean "building_demolition"
+    t.integer "building_id", default: 0
+    t.integer "building_end_time", default: 0
+    t.boolean "building_demolition", default: false
     t.json "hangar_queue"
-    t.datetime "hangar_start_time"
-    t.boolean "hangar_plus"
+    t.boolean "hangar_plus", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "last_updated", default: 0
     t.json "building_queue", default: {"queue"=>[]}
     t.uuid "universe_field_id"
+    t.integer "hangar_start_time", default: 0
     t.index ["universe_field_id"], name: "index_planets_on_universe_field_id"
     t.index ["user_id"], name: "index_planets_on_user_id"
   end

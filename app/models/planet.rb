@@ -4,17 +4,17 @@
 #
 #  id                  :uuid             not null, primary key
 #  auronium            :integer
-#  building_demolition :boolean
-#  building_end_time   :integer
+#  building_demolition :boolean          default(FALSE)
+#  building_end_time   :integer          default(0)
 #  building_queue      :json
 #  energy              :integer
 #  energy_max          :integer
 #  energy_used         :integer
 #  fields_current      :integer
 #  fields_max          :integer
-#  hangar_plus         :boolean
+#  hangar_plus         :boolean          default(FALSE)
 #  hangar_queue        :json
-#  hangar_start_time   :datetime
+#  hangar_start_time   :integer          default(0)
 #  hydrogen            :integer
 #  last_updated        :integer          default(0)
 #  name                :string           default("")
@@ -27,7 +27,7 @@
 #  titanium            :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  building_id         :integer
+#  building_id         :integer          default(0)
 #  universe_field_id   :uuid
 #  user_id             :uuid
 #

@@ -26,5 +26,4 @@ module TestHelper
     file.close
     JSON.parse(@result)
   end
-
 end

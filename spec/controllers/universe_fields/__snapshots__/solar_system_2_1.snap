@@ -2,14 +2,196 @@
   {
     "pos_galaxy": 2,
     "pos_system": 1,
+    "pos_planet": 1,
+    "planet": {
+      "name": "#1",
+      "planet_type": 1,
+      "planet_image": "rocky-planet-1",
+      "planet_diameter": 10000,
+      "temp_max": 260,
+      "temp_min": 230
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 2,
+    "planet": {
+      "name": "#2",
+      "planet_type": 2,
+      "planet_image": "volcanic-planet-1",
+      "planet_diameter": 11000,
+      "temp_max": 190,
+      "temp_min": 150
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 3,
+    "planet": {
+      "name": "#3",
+      "planet_type": 2,
+      "planet_image": "volcanic-planet-2",
+      "planet_diameter": 12000,
+      "temp_max": 140,
+      "temp_min": 100
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 4,
+    "planet": {
+      "name": "#4",
+      "planet_type": 3,
+      "planet_image": "barren-planet-1",
+      "planet_diameter": 13000,
+      "temp_max": 90,
+      "temp_min": 50
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 5,
+    "planet": {
+      "name": "#5",
+      "planet_type": 4,
+      "planet_image": "hydro-planet-1",
+      "planet_diameter": 14000,
+      "temp_max": 80,
+      "temp_min": 40
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 6,
+    "planet": {
+      "name": "#6",
+      "planet_type": 5,
+      "planet_image": "terra-planet-1",
+      "planet_diameter": 13800,
+      "temp_max": 70,
+      "temp_min": 30
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 7,
+    "planet": {
+      "name": "#7",
+      "planet_type": 5,
+      "planet_image": "terra-planet-2",
+      "planet_diameter": 13800,
+      "temp_max": 60,
+      "temp_min": 20
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
     "pos_planet": 8,
     "planet": {
-      "name": "Terra 2",
-      "planet_type": 1,
-      "planet_image": "terra_2.jpg",
-      "planet_diameter": 100,
-      "temp_max": 100,
-      "temp_min": 100
+      "name": "#8",
+      "planet_type": 5,
+      "planet_image": "terra-planet-3",
+      "planet_diameter": 13800,
+      "temp_max": 50,
+      "temp_min": 10
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 9,
+    "planet": {
+      "name": "#9",
+      "planet_type": 5,
+      "planet_image": "terra-planet-4",
+      "planet_diameter": 13800,
+      "temp_max": 40,
+      "temp_min": 0
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 10,
+    "planet": {
+      "name": "#10",
+      "planet_type": 5,
+      "planet_image": "terra-planet-5",
+      "planet_diameter": 13800,
+      "temp_max": 30,
+      "temp_min": -10
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 11,
+    "planet": {
+      "name": "#11",
+      "planet_type": 6,
+      "planet_image": "gas-planet-1",
+      "planet_diameter": 17000,
+      "temp_max": 20,
+      "temp_min": -20
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 12,
+    "planet": {
+      "name": "#12",
+      "planet_type": 6,
+      "planet_image": "gas-planet-2",
+      "planet_diameter": 18000,
+      "temp_max": 10,
+      "temp_min": -30
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 13,
+    "planet": {
+      "name": "#13",
+      "planet_type": 7,
+      "planet_image": "ice-planet-1",
+      "planet_diameter": 19000,
+      "temp_max": -30,
+      "temp_min": -70
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 14,
+    "planet": {
+      "name": "#14",
+      "planet_type": 7,
+      "planet_image": "ice-planet-2",
+      "planet_diameter": 20000,
+      "temp_max": -70,
+      "temp_min": -110
+    }
+  },
+  {
+    "pos_galaxy": 2,
+    "pos_system": 1,
+    "pos_planet": 15,
+    "planet": {
+      "name": "#15",
+      "planet_type": 8,
+      "planet_image": "dwarf-planet-1",
+      "planet_diameter": 2000,
+      "temp_max": -110,
+      "temp_min": -180
     }
   }
 ]

@@ -1,17 +1,11 @@
 {
   "id": "ANY",
-  "auronium": 963,
+  "auronium": 985,
   "building_demolition": false,
   "building_end_time": "ANY",
   "building_queue": {
     "queue": [
-      {
-        "amount": 1,
-        "unit_id": 100,
-        "is_demolition": false,
-        "level": 2,
-        "building_end_time": "ANY"
-      }
+
     ]
   },
   "building_id": 100,
@@ -32,7 +26,7 @@
   "stardust": null,
   "temp_max": 60,
   "temp_min": 20,
-  "titanium": 850,
+  "titanium": 940,
   "titanium_storage": 10000,
   "auronium_storage": 10000,
   "hydrogen_storage": 10000

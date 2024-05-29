@@ -82,6 +82,7 @@ RSpec.describe 'UsersController', type: :request do
         expect(response).to have_http_status(:success)
         expect(response.headers['Authorization']).to be_present
 
+        Planet.destroy_by(user_id: nil)
         new_account = Eth::Key.new
         get '/api/messages', params: { address: new_account.address }
         expect(response).to have_http_status(:success)

@@ -72,6 +72,7 @@ RSpec.describe 'Buildings', type: :request do
     end
     context 'demolish' do
       it 'should start demolishing' do
+        adrian_building.update_column(:titanium_foundry, 1)
         post "/api/planets/#{adrian_planet.id}/buildings/demolish", headers: auth_as(adrian), params: { building: { id: 100 } }
         expect(response).to match_snapshot('start_demolishing')
 
@@ -91,12 +92,12 @@ RSpec.describe 'Buildings', type: :request do
     end
 
     context 'check_build_end' do
-      it 'should update building to level 2' do
+      it 'should update building to level 1' do
         post "/api/planets/#{adrian_planet.id}/buildings/build", headers: auth_as(adrian), params: { building: { id: 100 } }
         expect(response).to match_snapshot('start_building')
 
         get "/api/planets/#{adrian_planet.id}", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_2')
+        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_1')
 
         allow(Time).to receive(:now).and_return(Time.now + 3.minutes)
 
@@ -104,7 +105,7 @@ RSpec.describe 'Buildings', type: :request do
         expect(response).to match_snapshot('adrian_buildings_update_building_to_level_2')
       end
 
-      it 'should update building to level 3' do
+      it 'should update building to level 2' do
         post "/api/planets/#{adrian_planet.id}/buildings/build", headers: auth_as(adrian), params: { building: { id: 100 } }
         expect(response).to match_snapshot('start_building')
 
@@ -112,20 +113,20 @@ RSpec.describe 'Buildings', type: :request do
         expect(response).to match_snapshot('start_building')
 
         get "/api/planets/#{adrian_planet.id}", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_3')
+        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_2')
 
-        allow(Time).to receive(:now).and_return(Time.now + 3.minutes)
+        allow(Time).to receive(:now).and_return(Time.now + 2.minutes)
 
         get "/api/planets/#{adrian_planet.id}/buildings", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_2')
+        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_1')
 
         allow(Time).to receive(:now).and_return(Time.now + 6.minutes)
 
         get "/api/planets/#{adrian_planet.id}/buildings", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_3')
+        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_2')
       end
 
-      it 'should update build id 100 to 2 and build id 101 to 2' do
+      it 'should update build id 100 to 1 and build id 101 to 1' do
         post "/api/planets/#{adrian_planet.id}/buildings/build", headers: auth_as(adrian), params: { building: { id: 100 } }
         expect(response).to match_snapshot('start_building')
 
@@ -133,17 +134,17 @@ RSpec.describe 'Buildings', type: :request do
         expect(response).to match_snapshot('start_building')
 
         get "/api/planets/#{adrian_planet.id}", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_and_101_to_level_2')
+        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_and_101_to_level_1')
 
-        allow(Time).to receive(:now).and_return(Time.now + 3.minutes)
+        allow(Time).to receive(:now).and_return(Time.now + 2.minutes)
 
         get "/api/planets/#{adrian_planet.id}/buildings", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_2')
+        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_100_to_level_1')
 
         allow(Time).to receive(:now).and_return(Time.now + 6.minutes)
 
         get "/api/planets/#{adrian_planet.id}/buildings", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_101_level_2_and_id_100_to_level_2')
+        expect(response).to match_snapshot('adrian_buildings_after_end_building_id_101_level_1_and_id_100_to_level_1')
       end
 
       it 'should cancel last building with id 100 in queue' do
@@ -152,7 +153,7 @@ RSpec.describe 'Buildings', type: :request do
         post "/api/planets/#{adrian_planet.id}/buildings/build", headers: auth_as(adrian), params: { building: { id: 100 } }
 
         get "/api/planets/#{adrian_planet.id}", headers: auth_as(adrian)
-        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_3_and_id_101_to_level_2')
+        expect(response).to match_snapshot('adrian_planet_after_start_building_id_100_to_level_2_and_id_101_to_level_1')
 
         post "/api/planets/#{adrian_planet.id}/buildings/cancel", headers: auth_as(adrian), params: { queue: { position: 2 } }
         expect(response).to match_snapshot('cancel_building')
@@ -162,6 +163,7 @@ RSpec.describe 'Buildings', type: :request do
       end
 
       it 'should demolish building with id 100' do
+        adrian_building.update_column(:titanium_foundry, 1)
         post "/api/planets/#{adrian_planet.id}/buildings/demolish", headers: auth_as(adrian), params: { building: { id: 100 } }
         expect(response).to match_snapshot('start_demolishing')
 
