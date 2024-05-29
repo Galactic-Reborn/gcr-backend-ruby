@@ -85,34 +85,19 @@ class Building < ApplicationRecord
   end
 
   def build(building_id)
-    # Sprawdzanie dostępności pól na planecie
     planet.check_planet_fields
 
-    # Inicjalizacja kolejki budowy
     planet_queue = BuildingQueue.new(planet.building_queue)
     raise MaxQueue if planet_queue.get_length >= 2
 
-    # Określenie aktualnego poziomu budynku i planowanego poziomu ulepszenia
-    actual_building_level = self[BuildingConstants::BUILDINGS_NAME[building_id]]
-    upgrade_level = actual_building_level + 1
+    actual_building_level = building_level(building_id)
+    upgrade_level = calculate_upgrade_level(building_id, actual_building_level, planet_queue)
 
-    # Logika dotycząca ulepszenia w kolejce
-    if planet_queue.get_length > 0 && planet_queue.get_count_by_unit_id(building_id) > 0
-      upgrade_level += planet_queue.get_count_by_unit_id(building_id)
-    elsif planet.building_end_time > 0 && planet.building_id == building_id
-      upgrade_level += 1
-    end
-
-    # Obliczanie kosztów budowy
     building_costs = BuildingsHelper.calculate_building_costs(upgrade_level, building_id)
-    if planet.titanium < building_costs[:titanium] || planet.auronium < building_costs[:auronium] || planet.hydrogen < building_costs[:hydrogen]
-      raise NotEnoughResources
-    end
+    check_resources_availability(building_costs)
 
-    # Obliczanie czasu budowy
     building_time = CalculationsHelper.calculate_build_time_in_seconds(building_costs[:titanium], building_costs[:auronium], robotics_workshop, nano_assembly_factory)
 
-    # Dodawanie do kolejki lub rozpoczęcie budowy
     if planet.building_end_time > 0
       last_queue_item = planet_queue.get_last_queue_item
       if last_queue_item.present?
@@ -127,10 +112,7 @@ class Building < ApplicationRecord
       planet.building_id = building_id
     end
 
-    # Odejmowanie zasobów i zapisanie zmian
-    planet.titanium -= building_costs[:titanium]
-    planet.auronium -= building_costs[:auronium]
-    planet.hydrogen -= building_costs[:hydrogen]
+    deduct_resources(building_costs)
     planet.building_queue = planet_queue
 
     planet.save
@@ -144,14 +126,10 @@ class Building < ApplicationRecord
 
     if position == 0 && planet.building_end_time > 0
       unless planet.building_demolition
-        building_costs = BuildingsHelper.calculate_building_costs(self[BuildingConstants::BUILDINGS_NAME[planet.building_id]] + 1, planet.building_id)
-        planet.titanium += building_costs[:titanium]
-        planet.auronium += building_costs[:auronium]
-        planet.hydrogen += building_costs[:hydrogen]
+        building_costs = BuildingsHelper.calculate_building_costs(building_level(planet.building_id) + 1, planet.building_id)
+        refund_resources(building_costs)
       end
-      planet.building_end_time = 0
-      planet.building_demolition = false
-      planet.building_id = 0
+      reset_building
     else
       position -= 1
 
@@ -159,9 +137,7 @@ class Building < ApplicationRecord
       if queue_item.present?
         unless queue_item['is_demolition']
           building_costs = BuildingsHelper.calculate_building_costs(queue_item['level'], queue_item['unit_id'])
-          planet.titanium += building_costs[:titanium]
-          planet.auronium += building_costs[:auronium]
-          planet.hydrogen += building_costs[:hydrogen]
+          refund_resources(building_costs)
         end
         planet_queue.remove_queue_item_by_position(position)
       end
@@ -180,7 +156,7 @@ class Building < ApplicationRecord
       raise CantDemolishBuildingInQueue
     end
 
-    actual_building_level = self[BuildingConstants::BUILDINGS_NAME[building_id]]
+    actual_building_level = building_level(building_id)
     if actual_building_level == 0
       raise NoBuildingToDemolish
     end
@@ -205,8 +181,9 @@ class Building < ApplicationRecord
       planet_queue = BuildingQueue.new(planet.building_queue)
       planet_queue_length = planet_queue.get_length
       building_id = planet.building_id
+
       if planet.building_demolition
-        building_costs = BuildingsHelper.calculate_building_costs(self[BuildingConstants::BUILDINGS_NAME[building_id]], building_id)
+        building_costs = BuildingsHelper.calculate_building_costs(building_level(building_id), building_id)
         self[BuildingConstants::BUILDINGS_NAME[building_id]] -= 1
 
         planet.titanium += building_costs[:titanium] / 2
@@ -219,10 +196,9 @@ class Building < ApplicationRecord
       if planet_queue_length > 0
         process_first_queue_item(planet_queue)
       else
-        planet.building_end_time = 0
-        planet.building_demolition = false
-        planet.building_id = 0
+        reset_building
       end
+
       planet.building_queue = planet_queue
       planet.save
       self.save
@@ -233,6 +209,44 @@ class Building < ApplicationRecord
   end
 
   private
+
+  def building_level(building_id)
+    self[BuildingConstants::BUILDINGS_NAME[building_id]]
+  end
+
+  def calculate_upgrade_level(building_id, actual_building_level, planet_queue)
+    upgrade_level = actual_building_level + 1
+    if planet_queue.get_length > 0 && planet_queue.get_count_by_unit_id(building_id) > 0
+      upgrade_level += planet_queue.get_count_by_unit_id(building_id)
+    elsif planet.building_end_time > 0 && planet.building_id == building_id
+      upgrade_level += 1
+    end
+    upgrade_level
+  end
+
+  def check_resources_availability(building_costs)
+    if planet.titanium < building_costs[:titanium] || planet.auronium < building_costs[:auronium] || planet.hydrogen < building_costs[:hydrogen]
+      raise NotEnoughResources
+    end
+  end
+
+  def deduct_resources(building_costs)
+    planet.titanium -= building_costs[:titanium]
+    planet.auronium -= building_costs[:auronium]
+    planet.hydrogen -= building_costs[:hydrogen]
+  end
+
+  def refund_resources(building_costs)
+    planet.titanium += building_costs[:titanium]
+    planet.auronium += building_costs[:auronium]
+    planet.hydrogen += building_costs[:hydrogen]
+  end
+
+  def reset_building
+    planet.building_end_time = 0
+    planet.building_demolition = false
+    planet.building_id = 0
+  end
 
   def process_first_queue_item(planet_queue)
     queue_item = planet_queue.get_first_queue_item
