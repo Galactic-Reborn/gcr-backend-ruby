@@ -177,7 +177,7 @@ class Building < ApplicationRecord
   end
 
   def check_build_end
-    if planet.building_end_time > 0 && planet.building_end_time <= Time.now.to_i
+    if planet.user_id.present? && planet.building_end_time > 0 && planet.building_end_time <= Time.now.to_i
       planet_queue = BuildingQueue.new(planet.building_queue)
       planet_queue_length = planet_queue.get_length
       building_id = planet.building_id

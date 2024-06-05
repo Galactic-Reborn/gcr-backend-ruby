@@ -2,5 +2,6 @@
   "address": "ANY",
   "username": "Adrian",
   "tech_id": null,
-  "tech_end_time": null
+  "tech_end_time": null,
+  "main_planet_id": "ANY"
 }

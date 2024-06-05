@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     put 'profile', to: 'profile#update'
     get 'universe/solar_system', to: 'universe_fields#solar_system'
 
-    resources :planets, only: [:index, :show] do
+    resources :planets, only: [:index, :show, :update] do
+      member do
+        post :set_as_home
+      end
       resources :buildings, only: [:index] do
         collection do
           post  :build

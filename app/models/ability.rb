@@ -7,7 +7,7 @@ class Ability
 
 
     if user.present?
-      can :read, Planet, user_id: user.id
+      can [:read, :update, :set_as_home], Planet, user_id: user.id
       can [:read, :build, :cancel, :demolish], Building,  planet: { user_id: user.id }
     end
 

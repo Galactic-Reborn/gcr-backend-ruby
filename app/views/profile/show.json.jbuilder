@@ -1,1 +1,1 @@
-json.extract! @user, :address, :username,:tech_id, :tech_end_time
+json.extract! @user, :address, :username, :tech_id, :tech_end_time, :main_planet_id

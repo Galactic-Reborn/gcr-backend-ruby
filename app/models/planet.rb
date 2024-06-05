@@ -118,10 +118,13 @@ class Planet < ApplicationRecord
           .first
   end
 
+  def set_as_home
+    user.update!(main_planet_id: id)
+  end
+
   private
 
   def defaults
     self.building_end_time ||= 0
   end
-
 end
