@@ -24,7 +24,7 @@ Devise.setup do |config|
 
   config.secret_key = ''
   config.jwt do |jwt|
-    jwt.secret = 'fsi2389r@erf8*2Ffais19847454asdf12rawsfd12r12r1g39f7h2gdhasf'
+    jwt.secret = 'dfasfasfasfasf'
     jwt.expiration_time = 1.month.to_i
   end
 
