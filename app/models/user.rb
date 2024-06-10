@@ -50,6 +50,10 @@ class User < ApplicationRecord
     false
   end
 
+  def jwt_payload
+    super.merge('address' => address)
+  end
+
   def assign_planet
     planet = Planet.get_first_free_planet
     if planet
