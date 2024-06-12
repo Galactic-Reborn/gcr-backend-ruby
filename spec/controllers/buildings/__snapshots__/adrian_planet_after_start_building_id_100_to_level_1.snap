@@ -1,6 +1,5 @@
 {
   "id": "ANY",
-  "auronium": 985,
   "building_demolition": false,
   "building_end_time": "ANY",
   "building_queue": {
@@ -9,15 +8,11 @@
     ]
   },
   "building_id": 100,
-  "energy": 0,
-  "energy_max": 0,
-  "energy_used": 0,
   "fields_current": 0,
   "fields_max": 138,
   "hangar_plus": false,
   "hangar_queue": null,
   "hangar_start_time": 0,
-  "hydrogen": 1000,
   "last_updated": "ANY",
   "name": "Adrian Planet",
   "planet_diameter": 13800,
@@ -26,8 +21,26 @@
   "stardust": null,
   "temp_max": 60,
   "temp_min": 20,
-  "titanium": 940,
-  "titanium_storage": 10000,
-  "auronium_storage": 10000,
-  "hydrogen_storage": 10000
+  "resources": {
+    "energy": {
+      "used": 0,
+      "max": 0,
+      "free": 0
+    },
+    "titanium": {
+      "amount": 940,
+      "production": 0,
+      "storage": 10000
+    },
+    "aurorium": {
+      "amount": 985,
+      "production": 0,
+      "storage": 10000
+    },
+    "hydrogen": {
+      "amount": 1000,
+      "production": 0,
+      "storage": 10000
+    }
+  }
 }

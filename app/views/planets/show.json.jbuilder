@@ -1,19 +1,14 @@
 json.extract! @planet,
               :id,
-              :auronium,
               :building_demolition,
               :building_end_time,
               :building_queue,
               :building_id,
-              :energy,
-              :energy_max,
-              :energy_used,
               :fields_current,
               :fields_max,
               :hangar_plus,
               :hangar_queue,
               :hangar_start_time,
-              :hydrogen,
               :last_updated,
               :name,
               :planet_diameter,
@@ -21,9 +16,27 @@ json.extract! @planet,
               :planet_type,
               :stardust,
               :temp_max,
-              :temp_min,
-              :titanium
+              :temp_min
 
-json.titanium_storage @storages_capacity[:titanium]
-json.auronium_storage @storages_capacity[:auronium]
-json.hydrogen_storage @storages_capacity[:hydrogen]
+json.resources do
+  json.energy do
+    json.used @planet.energy_used
+    json.max @planet.energy_max
+    json.free @planet.energy_max - @planet.energy_used
+  end
+  json.titanium do
+    json.amount @planet.titanium
+    json.production @production_rates[:titanium]
+    json.storage @storages_capacity[:titanium]
+  end
+  json.aurorium do
+    json.amount @planet.auronium
+    json.production @production_rates[:auronium]
+    json.storage @storages_capacity[:auronium]
+  end
+  json.hydrogen do
+    json.amount @planet.hydrogen
+    json.production @production_rates[:hydrogen]
+    json.storage @storages_capacity[:hydrogen]
+  end
+end

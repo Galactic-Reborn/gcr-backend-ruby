@@ -22,9 +22,8 @@ Devise.setup do |config|
     manager.default_strategies(:scope => :user).unshift :devise_no_pass
   end
 
-  config.secret_key = ''
   config.jwt do |jwt|
-    jwt.secret = 'dfasfasfasfasf'
+    jwt.secret = Rails.application.config.jwt_secret
     jwt.expiration_time = 1.month.to_i
   end
 

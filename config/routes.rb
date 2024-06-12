@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     get 'universe/solar_system', to: 'universe_fields#solar_system'
 
     resources :planets, only: [:index, :show, :update] do
+      collection do
+        get 'home', to: 'planets#home_planet'
+      end
       member do
         post :set_as_home
       end
