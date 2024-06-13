@@ -8,19 +8,21 @@
     ]
   },
   "building_id": 0,
-  "fields_current": 0,
-  "fields_max": 138,
   "hangar_plus": false,
   "hangar_queue": null,
   "hangar_start_time": 0,
   "last_updated": "ANY",
-  "name": "Adrian Planet",
-  "planet_diameter": 13800,
   "planet_image": "terra-planet-2",
-  "planet_type": 5,
   "stardust": null,
-  "temp_max": 60,
-  "temp_min": 20,
+  "planet_info": {
+    "name": "Adrian Planet",
+    "planet_type": 5,
+    "planet_diameter": 13800,
+    "temp_max": 60,
+    "temp_min": 20,
+    "fields_current": 0,
+    "fields_max": 138
+  },
   "resources": {
     "energy": {
       "used": 0,

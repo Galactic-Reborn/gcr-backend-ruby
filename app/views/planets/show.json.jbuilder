@@ -4,19 +4,23 @@ json.extract! @planet,
               :building_end_time,
               :building_queue,
               :building_id,
-              :fields_current,
-              :fields_max,
               :hangar_plus,
               :hangar_queue,
               :hangar_start_time,
               :last_updated,
-              :name,
-              :planet_diameter,
               :planet_image,
-              :planet_type,
-              :stardust,
-              :temp_max,
-              :temp_min
+              :stardust
+
+json.planet_info do
+  json.extract! @planet,
+                :name,
+                :planet_type,
+                :planet_diameter,
+                :temp_max,
+                :temp_min,
+                :fields_current,
+                :fields_max
+end
 
 json.resources do
   json.energy do
