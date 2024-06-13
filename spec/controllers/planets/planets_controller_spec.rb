@@ -36,5 +36,18 @@ RSpec.describe 'PlanetsController', type: :request do
       get "/api/planets/#{adrian_planet.id}", headers: auth_as(adrian)
       expect(response).to match_snapshot('adrian_planet_update_resources')
     end
+
+    it 'home_planet' do
+      get '/api/planets/home', headers: auth_as(adrian)
+      expect(response).to match_snapshot('adrian_home_planet')
+    end
+
+    it 'set_as_home' do
+      free_planet = Planet.find_by(user_id: nil)
+      free_planet.update!(user_id: adrian.id)
+      post "/api/planets/#{free_planet.id}/set_as_home", headers: auth_as(adrian)
+      expect(response).to match_snapshot('set_as_home')
+
+    end
   end
 end
