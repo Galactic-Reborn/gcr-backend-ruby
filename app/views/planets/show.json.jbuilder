@@ -34,7 +34,7 @@ json.resources do
     json.production @production_rates[:titanium]
     json.storage @storages_capacity[:titanium]
   end
-  json.aurorium do
+  json.auronium do
     json.amount @planet.auronium
     json.production @production_rates[:auronium]
     json.storage @storages_capacity[:auronium]
