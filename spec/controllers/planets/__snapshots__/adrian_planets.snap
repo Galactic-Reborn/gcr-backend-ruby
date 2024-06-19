@@ -1,6 +1,7 @@
 [
   {
     "id": "ANY",
-    "name": "Adrian Planet"
+    "name": "Adrian Planet",
+    "is_home": true
   }
 ]

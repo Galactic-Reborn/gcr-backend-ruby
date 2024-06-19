@@ -20,6 +20,7 @@ json.planet_info do
                 :temp_min,
                 :fields_current,
                 :fields_max
+  json.coordinates @planet.coordinates
 end
 
 json.resources do

@@ -21,7 +21,8 @@
     "temp_max": 70,
     "temp_min": 30,
     "fields_current": 0,
-    "fields_max": 138
+    "fields_max": 138,
+    "coordinates": "1:1:6"
   },
   "resources": {
     "energy": {

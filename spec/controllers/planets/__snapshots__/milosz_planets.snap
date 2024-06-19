@@ -1,6 +1,7 @@
 [
   {
     "id": "ANY",
-    "name": "Milosz Planet"
+    "name": "Milosz Planet",
+    "is_home": true
   }
 ]

@@ -111,6 +111,10 @@ class Planet < ApplicationRecord
     building.attributes.except('id', 'created_at', 'updated_at', 'planet_id').values.compact.sum
   end
 
+  def coordinates
+    "#{universe_field.pos_galaxy}:#{universe_field.pos_system}:#{universe_field.pos_planet}"
+  end
+
   def self.get_first_free_planet
     Planet.where(user_id: nil).joins(:universe_field)
           .where(universe_fields: { pos_planet: GameConfig::MIN_POSITION_USER_START_PLANET..GameConfig::MAX_POSITION_USER_START_PLANET })
