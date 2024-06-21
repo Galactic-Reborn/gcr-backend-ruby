@@ -1,5 +1,6 @@
 [
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 1,
@@ -13,6 +14,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 2,
@@ -26,6 +28,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 3,
@@ -39,6 +42,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 4,
@@ -52,6 +56,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 5,
@@ -65,6 +70,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 6,
@@ -76,11 +82,13 @@
       "temp_max": 70,
       "temp_min": 30,
       "user": {
-        "username": "Milosz"
+        "username": "Milosz",
+        "address": "ANY"
       }
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 7,
@@ -92,11 +100,13 @@
       "temp_max": 60,
       "temp_min": 20,
       "user": {
-        "username": "Adrian"
+        "username": "Adrian",
+        "address": "ANY"
       }
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 8,
@@ -110,6 +120,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 9,
@@ -123,6 +134,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 10,
@@ -136,6 +148,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 11,
@@ -149,6 +162,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 12,
@@ -162,6 +176,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 13,
@@ -175,6 +190,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 14,
@@ -188,6 +204,7 @@
     }
   },
   {
+    "id": "ANY",
     "pos_galaxy": 1,
     "pos_system": 1,
     "pos_planet": 15,

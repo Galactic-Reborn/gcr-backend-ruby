@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get 'messages', to: 'messages#message'
     get 'profile', to: 'profile#show'
     put 'profile', to: 'profile#update'
-    get 'universe/solar_system', to: 'universe_fields#solar_system'
+    post 'universe/solar_system', to: 'universe_fields#solar_system'
 
     resources :planets, only: [:index, :show, :update] do
       collection do
