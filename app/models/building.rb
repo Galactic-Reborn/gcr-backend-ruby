@@ -252,11 +252,11 @@ class Building < ApplicationRecord
     queue_item = planet_queue.get_first_queue_item
     if queue_item['is_demolition']
       planet.building_end_time = queue_item['building_end_time']
-      planet.building_demolition = True
+      planet.building_demolition = true
       planet.building_id = queue_item['unit_id']
     else
       planet.building_end_time = queue_item['building_end_time']
-      planet.building_demolition = False
+      planet.building_demolition = false
       planet.building_id = queue_item['unit_id']
     end
     planet_queue.remove_queue_item
