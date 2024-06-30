@@ -1,3 +1,54 @@
 {
-  "status": "Start building"
+  "requirements": {
+    "requirements": {
+      "titanium": 76,
+      "auronium": 38,
+      "hydrogen": 0,
+      "energy": 24
+    },
+    "time": 164,
+    "upgrade_level": 2,
+    "level": 0
+  },
+  "planet": {
+    "building_demolition": false,
+    "building_end_time": "ANY",
+    "building_queue": {
+      "queue": [
+        {
+          "amount": 1,
+          "build_time": 104,
+          "unit_id": 101,
+          "is_demolition": false,
+          "level": 1,
+          "level_added_to_queue": 1,
+          "building_end_time": "ANY"
+        }
+      ]
+    },
+    "building_id": 100,
+    "build_time": 108,
+    "resources": {
+      "energy": {
+        "used": 0,
+        "max": 0,
+        "free": 0
+      },
+      "titanium": {
+        "amount": 892,
+        "production": 0,
+        "storage": 10000
+      },
+      "auronium": {
+        "amount": 961,
+        "production": 0,
+        "storage": 10000
+      },
+      "hydrogen": {
+        "amount": 1000,
+        "production": 0,
+        "storage": 10000
+      }
+    }
+  }
 }

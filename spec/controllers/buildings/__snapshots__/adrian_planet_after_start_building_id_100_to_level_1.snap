@@ -1,5 +1,11 @@
 {
   "id": "ANY",
+  "hangar_plus": false,
+  "hangar_queue": null,
+  "hangar_start_time": 0,
+  "last_updated": "ANY",
+  "planet_image": "terra-planet-2",
+  "stardust": null,
   "building_demolition": false,
   "building_end_time": "ANY",
   "building_queue": {
@@ -8,12 +14,7 @@
     ]
   },
   "building_id": 100,
-  "hangar_plus": false,
-  "hangar_queue": null,
-  "hangar_start_time": 0,
-  "last_updated": "ANY",
-  "planet_image": "terra-planet-2",
-  "stardust": null,
+  "build_time": 108,
   "planet_info": {
     "name": "Adrian Planet",
     "planet_type": 5,
@@ -23,6 +24,184 @@
     "fields_current": 0,
     "fields_max": 138,
     "coordinates": "1:1:7"
+  },
+  "buildings": {
+    "titanium_foundry": {
+      "requirements": {
+        "titanium": 90,
+        "auronium": 22,
+        "hydrogen": 0,
+        "energy": 24
+      },
+      "time": 161,
+      "upgrade_level": 2,
+      "level": 0
+    },
+    "titanium_depot": {
+      "requirements": {
+        "titanium": 1000,
+        "auronium": 0,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 1440,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "auronium_synthesizer": {
+      "requirements": {
+        "titanium": 48,
+        "auronium": 24,
+        "hydrogen": 0,
+        "energy": 11
+      },
+      "time": 104,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "hydrogen_extractor": {
+      "requirements": {
+        "titanium": 225,
+        "auronium": 75,
+        "hydrogen": 0,
+        "energy": 22
+      },
+      "time": 432,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "auronium_repository": {
+      "requirements": {
+        "titanium": 1000,
+        "auronium": 500,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 2160,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "solar_array": {
+      "requirements": {
+        "titanium": 75,
+        "auronium": 30,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 151,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "fusion_power_plant": {
+      "requirements": {
+        "titanium": 900,
+        "auronium": 360,
+        "hydrogen": 180,
+        "energy": 0
+      },
+      "time": 1814,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "advanced_research_institute": {
+      "requirements": {
+        "titanium": 200,
+        "auronium": 400,
+        "hydrogen": 200,
+        "energy": 0
+      },
+      "time": 864,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "geomorphological_reshaper": {
+      "requirements": {
+        "titanium": 0,
+        "auronium": 50000,
+        "hydrogen": 100000,
+        "energy": 1000
+      },
+      "time": 72000,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "hydrogen_tank": {
+      "requirements": {
+        "titanium": 1000,
+        "auronium": 1000,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 2880,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "star_ship_hangar": {
+      "requirements": {
+        "titanium": 400,
+        "auronium": 200,
+        "hydrogen": 100,
+        "energy": 0
+      },
+      "time": 864,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "missile_silo": {
+      "requirements": {
+        "titanium": 20000,
+        "auronium": 20000,
+        "hydrogen": 1000,
+        "energy": 0
+      },
+      "time": 57600,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "aerospace_yard": {
+      "requirements": {
+        "titanium": 20000,
+        "auronium": 40000,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 86400,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "lunar_mine": {
+      "requirements": {
+        "titanium": 450,
+        "auronium": 900,
+        "hydrogen": 0,
+        "energy": 0
+      },
+      "time": 1944,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "robotics_workshop": {
+      "requirements": {
+        "titanium": 400,
+        "auronium": 120,
+        "hydrogen": 200,
+        "energy": 0
+      },
+      "time": 749,
+      "upgrade_level": 1,
+      "level": 0
+    },
+    "nano_assembly_factory": {
+      "requirements": {
+        "titanium": 1000000,
+        "auronium": 500000,
+        "hydrogen": 100000,
+        "energy": 0
+      },
+      "time": 2160000,
+      "upgrade_level": 1,
+      "level": 0
+    }
   },
   "resources": {
     "energy": {

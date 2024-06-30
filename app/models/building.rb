@@ -72,6 +72,21 @@ class Building < ApplicationRecord
       GeomorphologicalReshaperHelper.get_energy_consumption(geomorphological_reshaper)
   end
 
+  def energy_consumption_by_building(building_id, level)
+    case building_id
+    when BuildingConstants::BUILDINGS_ID[:titanium_foundry]
+      TitaniumFoundryHelper.get_energy_consumption(level)
+    when BuildingConstants::BUILDINGS_ID[:auronium_synthesizer]
+      AuroniumSynthesizerHelper.get_energy_consumption(level)
+    when BuildingConstants::BUILDINGS_ID[:hydrogen_extractor]
+      HydrogenExtractorHelper.get_energy_consumption(level)
+    when BuildingConstants::BUILDINGS_ID[:geomorphological_reshaper]
+      GeomorphologicalReshaperHelper.get_energy_consumption(level)
+    else
+      0
+    end
+  end
+
   def energy_production_solar
     SolarArrayHelper.get_production_rate(solar_array)
   end
@@ -84,11 +99,39 @@ class Building < ApplicationRecord
     FusionPowerPlantHelper.get_hydrogen_consumption(fusion_power_plant)
   end
 
+  def requirements(building_id)
+    planet_queue = BuildingQueue.new(planet.building_queue)
+    actual_building_level = building_level(building_id)
+    upgrade_level = calculate_upgrade_level(building_id, actual_building_level, planet_queue)
+    requirements = BuildingsHelper.calculate_building_costs(upgrade_level, building_id)
+    requirements[:energy] = energy_consumption_by_building(building_id, upgrade_level) - energy_consumption_by_building(building_id, actual_building_level)
+    time = CalculationsHelper.calculate_build_time_in_seconds(requirements[:titanium], requirements[:auronium], robotics_workshop, nano_assembly_factory)
+
+    {
+      requirements: requirements,
+      time: time,
+      upgrade_level: upgrade_level,
+      level: actual_building_level,
+    }
+  end
+
+  def all_info
+    BuildingConstants::BUILDINGS_ID.values.each_with_object({}) do |building_id, result|
+      building_requirements = requirements(building_id)
+      building_name = Building.building_name(building_id).underscore.to_sym
+      result[building_name] = building_requirements
+    end
+  end
+
   def build(building_id)
     planet.check_planet_fields
 
     planet_queue = BuildingQueue.new(planet.building_queue)
     raise MaxQueue if planet_queue.get_length >= 2
+
+    if planet.building_id == building_id && planet.building_demolition || planet_queue.get_count_by_unit_id_and_is_demolition(building_id, true) > 0
+      raise CantBuildIfDemolitionInQueue
+    end
 
     actual_building_level = building_level(building_id)
     upgrade_level = calculate_upgrade_level(building_id, actual_building_level, planet_queue)
@@ -105,11 +148,19 @@ class Building < ApplicationRecord
       else
         building_end_time = planet.building_end_time
       end
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: false, level: upgrade_level, building_end_time: building_end_time + building_time })
+      planet_queue.add_queue_item({ amount: 1,
+                                    build_time: building_time,
+                                    unit_id: building_id,
+                                    is_demolition: false,
+                                    level: upgrade_level,
+                                    level_added_to_queue: upgrade_level,
+                                    building_end_time: building_end_time + building_time })
     else
       planet.building_end_time = Time.now.to_i + building_time
       planet.building_demolition = false
       planet.building_id = building_id
+      planet.build_time = building_time
+      planet.build_level = upgrade_level
     end
 
     deduct_resources(building_costs)
@@ -120,15 +171,17 @@ class Building < ApplicationRecord
 
   def cancel_build(position)
     planet_queue = BuildingQueue.new(planet.building_queue)
+    canceled_building_id = 0
     if planet.building_end_time == 0 && planet_queue.get_length == 0
       raise NoBuildingInQueue
     end
 
     if position == 0 && planet.building_end_time > 0
       unless planet.building_demolition
-        building_costs = BuildingsHelper.calculate_building_costs(building_level(planet.building_id) + 1, planet.building_id)
+        building_costs = BuildingsHelper.calculate_building_costs(planet.build_level, planet.building_id)
         refund_resources(building_costs)
       end
+      canceled_building_id = planet.building_id
       reset_building
     else
       position -= 1
@@ -136,16 +189,19 @@ class Building < ApplicationRecord
       queue_item = planet_queue.get_queue_item_by_position(position)
       if queue_item.present?
         unless queue_item['is_demolition']
-          building_costs = BuildingsHelper.calculate_building_costs(queue_item['level'], queue_item['unit_id'])
+          building_costs = BuildingsHelper.calculate_building_costs(queue_item['level_added_to_queue'], queue_item['unit_id'])
           refund_resources(building_costs)
         end
+        canceled_building_id = queue_item['unit_id']
         planet_queue.remove_queue_item_by_position(position)
       end
     end
+    update_queue_times_and_levels(planet_queue)
     if planet_queue.get_length > 0 && planet.building_end_time == 0 && planet.building_id == 0
       process_first_queue_item(planet_queue)
     end
     planet.save
+    canceled_building_id
   end
 
   def demolish(building_id)
@@ -165,11 +221,19 @@ class Building < ApplicationRecord
     building_time = CalculationsHelper.calculate_build_time_in_seconds(building_costs[:titanium], building_costs[:auronium], robotics_workshop, nano_assembly_factory)
 
     if planet.building_end_time > 0
-      planet_queue.add_queue_item({ amount: 1, unit_id: building_id, is_demolition: true, level: actual_building_level, building_end_time: planet.building_end_time + building_time / 2 })
+      planet_queue.add_queue_item({ amount: 1,
+                                    build_time: building_time,
+                                    unit_id: building_id,
+                                    is_demolition: true,
+                                    level: actual_building_level,
+                                    level_added_to_queue: actual_building_level,
+                                    building_end_time: planet.building_end_time + building_time / 2 })
     else
       planet.building_end_time = Time.now.to_i + building_time / 2
       planet.building_demolition = true
       planet.building_id = building_id
+      planet.build_time = building_time / 2
+      planet.build_level = actual_building_level
     end
 
     planet.building_queue = planet_queue
@@ -218,7 +282,8 @@ class Building < ApplicationRecord
     upgrade_level = actual_building_level + 1
     if planet_queue.get_length > 0 && planet_queue.get_count_by_unit_id(building_id) > 0
       upgrade_level += planet_queue.get_count_by_unit_id(building_id)
-    elsif planet.building_end_time > 0 && planet.building_id == building_id
+    end
+    if planet.building_end_time > 0 && planet.building_id == building_id
       upgrade_level += 1
     end
     upgrade_level
@@ -237,30 +302,65 @@ class Building < ApplicationRecord
   end
 
   def refund_resources(building_costs)
-    planet.titanium += building_costs[:titanium]
-    planet.auronium += building_costs[:auronium]
-    planet.hydrogen += building_costs[:hydrogen]
+    storages = storages_capacity
+    if planet.titanium + building_costs[:titanium] > storages[:titanium]
+      planet.titanium = storages[:titanium]
+    else
+      planet.titanium += building_costs[:titanium]
+    end
+
+    if planet.auronium + building_costs[:auronium] > storages[:auronium]
+      planet.auronium = storages[:auronium]
+    else
+      planet.auronium += building_costs[:auronium]
+    end
+
+    if planet.hydrogen + building_costs[:hydrogen] > storages[:hydrogen]
+      planet.hydrogen = storages[:hydrogen]
+    else
+      planet.hydrogen += building_costs[:hydrogen]
+    end
   end
 
   def reset_building
     planet.building_end_time = 0
     planet.building_demolition = false
     planet.building_id = 0
+    planet.build_time = 0
+  end
+
+  def update_queue_times_and_levels(planet_queue)
+    previous_unit_id_level = {}
+
+    planet_queue.get_queue.each do |queue_item|
+      unit_id = queue_item['unit_id']
+      actual_level = planet.building_id == unit_id ? building_level(unit_id) + 1 : building_level(unit_id)
+      previous_level = previous_unit_id_level[unit_id] ? previous_unit_id_level[unit_id] : actual_level
+
+      build_time = CalculationsHelper.calculate_build_time_in_seconds(
+        BuildingsHelper.calculate_building_costs(previous_level + 1, unit_id)[:titanium],
+        BuildingsHelper.calculate_building_costs(previous_level + 1, unit_id)[:auronium],
+        robotics_workshop,
+        nano_assembly_factory
+      )
+
+      queue_item['build_time'] = build_time
+      queue_item['level'] = previous_level + 1
+
+      previous_unit_id_level[unit_id] = previous_level + 1
+    end
   end
 
   def process_first_queue_item(planet_queue)
     queue_item = planet_queue.get_first_queue_item
-    if queue_item['is_demolition']
-      planet.building_end_time = queue_item['building_end_time']
-      planet.building_demolition = true
+    if queue_item.present?
+      planet.building_end_time = Time.now.to_i + queue_item['build_time']
+      planet.building_demolition = queue_item['is_demolition']
       planet.building_id = queue_item['unit_id']
-    else
-      planet.building_end_time = queue_item['building_end_time']
-      planet.building_demolition = false
-      planet.building_id = queue_item['unit_id']
+      planet.build_time = queue_item['build_time']
+      planet.build_level = queue_item['level_added_to_queue']
+
+      planet_queue.remove_queue_item
     end
-    planet_queue.remove_queue_item
   end
 end
-
-

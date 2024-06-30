@@ -34,7 +34,11 @@ class BuildingQueue
   end
 
   def get_count_by_unit_id(unit_id)
-    @queue.count { |queue_item| queue_item['unit_id'] == unit_id }
+    @queue.count { |queue_item| queue_item['unit_id'] == unit_id && queue_item['is_demolition'] == false }
+  end
+
+  def get_count_by_unit_id_and_is_demolition(unit_id, is_demolition)
+    @queue.count { |queue_item| queue_item['unit_id'] == unit_id && queue_item['is_demolition'] == is_demolition }
   end
 
   def get_queue_item_by_unit_id(unit_id)

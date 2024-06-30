@@ -1,15 +1,13 @@
 json.extract! @planet,
               :id,
-              :building_demolition,
-              :building_end_time,
-              :building_queue,
-              :building_id,
               :hangar_plus,
               :hangar_queue,
               :hangar_start_time,
               :last_updated,
               :planet_image,
               :stardust
+
+json.partial! 'planets/planet_building_info', planet: @planet
 
 json.planet_info do
   json.extract! @planet,
@@ -23,25 +21,15 @@ json.planet_info do
   json.coordinates @planet.coordinates
 end
 
+json.buildings do
+  json.extract! @planet.building.all_info, :titanium_foundry, :titanium_depot,
+                :auronium_synthesizer, :hydrogen_extractor, :auronium_repository, :solar_array, :fusion_power_plant,
+                :advanced_research_institute, :geomorphological_reshaper, :hydrogen_tank, :star_ship_hangar, :missile_silo,
+                :aerospace_yard, :lunar_mine, :robotics_workshop, :nano_assembly_factory
+end
+
 json.resources do
-  json.energy do
-    json.used @planet.energy_used
-    json.max @planet.energy_max
-    json.free @planet.energy_max - @planet.energy_used
-  end
-  json.titanium do
-    json.amount @planet.titanium
-    json.production @production_rates[:titanium]
-    json.storage @storages_capacity[:titanium]
-  end
-  json.auronium do
-    json.amount @planet.auronium
-    json.production @production_rates[:auronium]
-    json.storage @storages_capacity[:auronium]
-  end
-  json.hydrogen do
-    json.amount @planet.hydrogen
-    json.production @production_rates[:hydrogen]
-    json.storage @storages_capacity[:hydrogen]
-  end
+  json.partial! 'planets/resources', planet: @planet,
+                production_rates: @planet.building.resources_production_rate(@planet.avg_temp),
+                storages_capacity: @planet.building.storages_capacity
 end

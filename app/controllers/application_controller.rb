@@ -24,6 +24,8 @@ class ApplicationController < ActionController::API
       no_building_to_demolish
     elsif exception.instance_of?(CantDemolishBuildingInQueue)
       cant_demolish_building_in_queue
+    elsif exception.instance_of?(CantBuildIfDemolitionInQueue)
+      cant_build_if_demolition_in_queue
     elsif exception.instance_of?(NoFreePlanets)
       no_free_planets
     else
@@ -77,6 +79,10 @@ class ApplicationController < ActionController::API
 
   def cant_demolish_building_in_queue
     render json: { error: 'You can not demolish building in queue' }, status: :bad_request
+  end
+
+  def cant_build_if_demolition_in_queue
+    render json: { error: 'You can not build if demolition in queue' }, status: :bad_request
   end
 
   def internal_server_error

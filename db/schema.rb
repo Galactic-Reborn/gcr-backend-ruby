@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_29_074203) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_30_091255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_074203) do
     t.json "building_queue", default: {"queue"=>[]}
     t.uuid "universe_field_id"
     t.integer "hangar_start_time", default: 0
+    t.integer "build_time", default: 0
+    t.integer "build_level", default: 0
     t.index ["universe_field_id"], name: "index_planets_on_universe_field_id"
     t.index ["user_id"], name: "index_planets_on_user_id"
   end

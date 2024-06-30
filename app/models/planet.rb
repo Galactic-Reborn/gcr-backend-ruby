@@ -4,6 +4,8 @@
 #
 #  id                  :uuid             not null, primary key
 #  auronium            :integer
+#  build_level         :integer          default(0)
+#  build_time          :integer          default(0)
 #  building_demolition :boolean          default(FALSE)
 #  building_end_time   :integer          default(0)
 #  building_queue      :json
@@ -86,7 +88,7 @@ class Planet < ApplicationRecord
     self.hydrogen = [self.hydrogen + hydrogen_produced - hydrogen_consumed, storages_capacity[:hydrogen]].min
 
     self.energy_max = energy_produced
-    self.energy_used = energy_consumption > energy_produced ? energy_produced : energy_consumption
+    self.energy_used = energy_consumption
     self.energy = energy_max - energy_used
     self.fields_current = sum_of_buildings_levels
 

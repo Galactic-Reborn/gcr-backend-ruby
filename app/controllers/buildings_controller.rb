@@ -9,17 +9,19 @@ class BuildingsController < ApplicationController
 
   def build
     @building.build(building_params[:id].to_i)
-    render json: { 'status': 'Start building' }, status: 200
+    @requirements = @building.requirements(building_params[:id].to_i)
   end
 
   def cancel
-    @building.cancel_build(cancel_params[:position].to_i)
-    render json: { 'status': 'Building canceled' }, status: 200
+    canceled_building_id = @building.cancel_build(cancel_params[:position].to_i)
+    @requirements = @building.requirements(canceled_building_id)
+    render :build
   end
 
   def demolish
     @building.demolish(building_params[:id].to_i)
-    render json: { 'status': 'Start demolishing' }, status: 200
+    @requirements = @building.requirements(building_params[:id].to_i)
+    render :build
   end
 
   private

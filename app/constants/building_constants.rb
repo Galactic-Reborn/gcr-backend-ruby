@@ -32,7 +32,7 @@ module BuildingConstants
     108 => 'geomorphological_reshaper',
     109 => 'robotics_workshop',
     110 => 'nano_assembly_factory',
-    111 => 'crystal_repository',
+    111 => 'auronium_repository',
     112 => 'hydrogen_tank',
     113 => 'titanium_depot',
     114 => 'star_ship_hangar',
