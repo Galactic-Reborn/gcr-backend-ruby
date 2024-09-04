@@ -25,7 +25,7 @@ require 'rails_helper'
 RSpec.describe UniverseField, type: :model do
 
   describe 'create_universe' do
-    it 'creates the universe' do
+    it 'create the universe' do
       UniverseField.create_universe
       expect(UniverseField.count).to eq(GameConfig::GALAXIES * GameConfig::SOLAR_SYSTEM_PER_GALAXY * GameConfig::PLANETS_PER_SOLAR_SYSTEM)
     end
